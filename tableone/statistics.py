@@ -175,8 +175,12 @@ class Statistics:
             test_stat, pval = stats.f_oneway(*grouped_data.values())
         elif is_continuous and not is_normal:
             # non-normally distributed
-            ptest = 'Kruskal-Wallis'
-            test_stat, pval = stats.kruskal(*grouped_data.values())
+            if len([*grouped_data.values()]) > 2:
+                ptest = 'Kruskal-Wallis'
+                test_stat, pval = stats.kruskal(*grouped_data.values())
+            else:
+                ptest = "Mann-Whitney U"
+                test_stat, pval = stats.mannwhitneyu(*grouped_data.values())
         # categorical
         elif is_categorical:
             # default to chi-squared
